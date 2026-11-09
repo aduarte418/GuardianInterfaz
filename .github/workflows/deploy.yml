@@ -1,0 +1,44 @@
+name: Generar Documentación JSDoc
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Descarga el código del repositorio
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      # 2. Configura el entorno de Node.js
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # 3. Genera la documentación JSDoc en la carpeta 'docs'
+      - name: Generar documentación con JSDoc
+        run: |
+          npx jsdoc script.js -d docs -R README.md
+
+      # 4. Sube la carpeta docs generada como artefacto descargable del workflow
+      - name: Subir artefacto de documentación
+        uses: actions/upload-artifact@v4
+        with:
+          name: documentacion-jsdoc
+          path: docs/
+
+      # =========================================================================
+      # NOTA PARA EL FUTURO:
+      # Cuando quieras desplegar en GitHub Pages, aquí podrás añadir los pasos:
+      # - uses: actions/upload-pages-artifact@v3
+      #   with:
+      #     path: docs/
+      # Y el job de deployment con 'actions/deploy-pages@v4'
+      # =========================================================================
+

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Guardián de la Interfaz</title>
+    <!--Enlace a la hoja CSS-->
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body id="body">
+
+<h1>El Guardián de la Interfaz</h1>
+
+<!--Contenedor de bienvenida vacío al que le entra el mensaje personalizado-->
+<div id="contenedor-bienvenida">
+
+</div>
+
+<!--Formulario-->
+<form id="formulario">
+    <input type="text" id="nombre" placeholder="Escribe tu nombre">
+    <br>
+    <input type="color" id="color" value="#000000">
+    <br>
+    <select id="modo">
+        <option value="claro">Modo Claro</option>
+        <option value="oscuro">Modo Oscuro</option>
+    </select>
+    <br>
+</form>
+
+<br>
+<!--Botón para guardar preferencias-->
+<button type="button" id="boton-guardar" class="boton">Guardar Preferencias</button>
+<br>
+<!--Botón para restablecer interfaz-->
+<button type="button" id="boton-reset" class="boton">Restablecer Interfaz</button>
+<br>
+<!--Script-->
+<script src="script.js"></script>
+</body>
+</html>
