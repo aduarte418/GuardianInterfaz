@@ -32,13 +32,3 @@ jobs:
         with:
           name: documentacion-jsdoc
           path: docs/
-
-      # =========================================================================
-      # NOTA PARA EL FUTURO:
-      # Cuando quieras desplegar en GitHub Pages, aquí podrás añadir los pasos:
-      # - uses: actions/upload-pages-artifact@v3
-      #   with:
-      #     path: docs/
-      # Y el job de deployment con 'actions/deploy-pages@v4'
-      # =========================================================================
-

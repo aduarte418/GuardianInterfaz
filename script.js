@@ -47,33 +47,28 @@ const botonGuardar = document.getElementById("boton-guardar");
 // Constantes para recuperar cada campo correspondiente a una cookie
 /** @type {HTMLInputElement} */
 const nombreInput = document.getElementById("nombre");
-// const colorInput = document.getElementById("color"); Este ya está declarado arriba
-// const modoInput = document.getElementById("modo"); Este ya está declarado arriba
 
 // Escuchador de eventos del botón Guardar y funcionalidad de guardar cookies
 botonGuardar.addEventListener("click", () => {
-    // Constantes para calcular fecha de expiración en 7 días
+    // Constante para calcular fecha de expiración en 7 días
     /**@type {Date} */
     const date = new Date();
-    /**@type {number} */
-    const sum = 7;
-    /**@type {Date} */
-    const newDate = new Date();
-    // Comprobar fecha actual con log por consola
-    console.log(date);
-    // Obtener la fecha de expiración de las cookies (dentro de 7 días)
-    newDate.setDate(date.getDate() + sum);
-    // Comprobar fecha nueva con log por consola
-    console.log(newDate);
-    // Constantes para recuperar el valor de cada cookie
-    const nombre = nombreInput.value;
+    date.setDate(date.getDate() + 7);
+    // Comprobar fecha de expiración con log por consola
+    console.log(`Fecha de expiración: ${date}`);
+
+    // Constantes para recuperar el valor de cada campo
+    // Si no introduce nombre o solo espacios, asignar "invitado" a nombre
+    const nombre = nombreInput.value.trim() || "invitado";
     const color = colorInput.value;
     const modo = modoInput.value;
+
     // Si se ha pulsado el botón Guardar preferencias, guardar las cookies
-    document.cookie = `nombre=${encodeURIComponent(nombre)}; expires=${newDate.toUTCString()}; path=/`;
-    document.cookie = `color=${encodeURIComponent(color)}; expires=${newDate.toUTCString()}; path=/`;
+    document.cookie = `nombre=${encodeURIComponent(nombre)}; expires=${date.toUTCString()}; path=/`;
+    document.cookie = `color=${encodeURIComponent(color)}; expires=${date.toUTCString()}; path=/`;
     // Cookie modo es de sesión, así que no se configurará expires
     document.cookie = `modo=${encodeURIComponent(modo)}; path=/`;
+
     // Mostrar el mensaje de bienvenida tras haber pulsado el botón y guardar las cookies
     createWelcomeMessage(nombre);
 });
@@ -88,7 +83,7 @@ botonReset.addEventListener("click", () => {
     // Si se ha pulsado el botón Restablecer Interfaz, aplicar fecha pasada para que expiren y se eliminen las preferencias guardadas
     document.cookie = `nombre=; expires=Sun, 01 Nov 2026 00:00:00 UTC; path=/`;
     document.cookie = `color=; expires=Sun, 01 Nov 2026 00:00:00 UTC; path=/`;
-    // La cookie de modo es de sesión, pero se elimina manualmente de todas formas
+    // La cookie de modo es de sesión, pero se elimina manualmente con fecha expirada
     document.cookie = `modo=; expires=Sun, 01 Nov 2026 00:00:00 UTC; path=/`;
 
     // Eliminar el color de fondo, resetando a que el estilo quede vacío y se aplique el CSS por defecto
@@ -118,7 +113,10 @@ function loadDOM() {
         // Cargar las cookies guardadas en la página
         loadCookies();
         // Pintar el mensaje de bienvenida pasando el valor del input (nombre del usuario) cargado por las cookies
-        createWelcomeMessage(nombreInput.value);
+        // Sólo pintarlo si existe el nombre introducido por el usuario
+        if (nombreInput.value) {
+            createWelcomeMessage(nombreInput.value);
+        }
     });
 }
 
@@ -138,6 +136,7 @@ function loadCookies() {
     if (nombre) {
         nombreInput.value = nombre;
     }
+
     // Si el color existe, aplicarle el color de fondo al body
     if (color) {
         document.body.style.backgroundColor = color;
@@ -160,8 +159,6 @@ function loadCookies() {
  * @returns {void} No devuelve nada
  */
 function createWelcomeMessage(nombre) {
-    // Si el usuario no ha introducido nombre o está vacío, asignar "invitado" a nombre
-    nombre = nombre || "invitado";
     // Escribir contenido en los elementos del contenedor
     h2.textContent = "Generación Dinámica del DOM";
     p.textContent = `Bienvenido al registro del formulario, ${nombre}. Te has registrado correctamente y puedes hacer uso de nuestras funciones. Gracias por tu tiempo y diviértete.`;
